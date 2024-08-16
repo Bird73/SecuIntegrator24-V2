@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecuIntegrator24.Test", "Tests\SecuIntegrator24.Test.csproj", "{C8465C30-89ED-4E21-86F0-CF1C5E7926C6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecuIntegrator24", "WinApp\SecuIntegrator24.csproj", "{864CC3EC-B65A-4995-A687-4023B5DC6701}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C8465C30-89ED-4E21-86F0-CF1C5E7926C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8465C30-89ED-4E21-86F0-CF1C5E7926C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8465C30-89ED-4E21-86F0-CF1C5E7926C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8465C30-89ED-4E21-86F0-CF1C5E7926C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{864CC3EC-B65A-4995-A687-4023B5DC6701}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{864CC3EC-B65A-4995-A687-4023B5DC6701}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{864CC3EC-B65A-4995-A687-4023B5DC6701}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{864CC3EC-B65A-4995-A687-4023B5DC6701}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FDC29DAE-AF5C-4FBA-8771-CD1FC44B659F}
+	EndGlobalSection
+EndGlobal
