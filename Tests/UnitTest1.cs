@@ -9,7 +9,7 @@ using Moq;      // Add Moq NuGet package, 假物件框架
 ///     Unit Test for UI Configuration Manager
 ///     UI 設定管理員單元測試
 /// </summary>
-public class UT0101_UIConfigurationManager
+public class UT0101_UIConfigManager
 {
     /// <summary>
     ///     Test UI Configuration
@@ -19,15 +19,16 @@ public class UT0101_UIConfigurationManager
     public void UT0101_TestUIConfiguration()
     {
         // Arrange
-        var mainForm = new MainForm();
-        var mockUIConfigurationManager = new Mock<UIConfigurationManager>(mainForm);
+        var mockUIConfigManager = new Mock<IUIConfigManager>();
+        var mainForm = new MainForm(mockUIConfigManager.Object);
+        mockUIConfigManager.Object.DelayLoad(mainForm);
 
         // Act
         mainForm.Show();
 
         // Assert
-        mockUIConfigurationManager.Verify(m => m.ApplyResizable(false), Times.Once);        // Resizable = false, 視窗大小不可調整
-        mockUIConfigurationManager.Verify(m => m.ApplyMaximizeButton(false), Times.Once);   // MaximizeButton = false, 最大化按鈕不顯示
-        mockUIConfigurationManager.Verify(m => m.ApplyMinimizeButton(false), Times.Once);   // MinimizeButton = false, 最小化按鈕不顯示
+        mockUIConfigManager.Verify(m => m.SetResizable(false), Times.Once);              // Resizable = false, 視窗大小不可調整
+        mockUIConfigManager.Verify(m => m.SetMaximizeButton(false), Times.Once);         // MaximizeButton = false, 最大化按鈕不顯示
+        mockUIConfigManager.Verify(m => m.SetMinimizeButton(false), Times.Once);         // MinimizeButton = false, 最小化按鈕不顯示
     }
 }
