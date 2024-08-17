@@ -1,4 +1,4 @@
-namespace Birdsoft.SecuIntegrator24.Test;
+namespace Birdsoft.SecuIntegrator24.Tests;
 
 using Birdsoft.SecuIntegrator24.WinUI;
 

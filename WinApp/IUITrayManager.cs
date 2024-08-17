@@ -14,6 +14,13 @@ public interface IUITrayManager
     void DelayLoad(Form form);
 
     /// <summary>
+    ///     Get the notify icon
+    ///     取得通知圖示
+    /// </summary>
+    /// <returns></returns>
+    NotifyIcon GetNotifyIcon();
+
+    /// <summary>
     ///     Minimize the form to the system tray
     ///     最小化視窗到系統匣
     /// </summary>
