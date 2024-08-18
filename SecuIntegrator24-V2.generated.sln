@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecuIntegrator24.Test", "Tests\SecuIntegrator24.Test.csproj", "{D392074D-7F40-4BE6-B8E1-5BDB9D9F91D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecuIntegrator24.Test", "Tests\SecuIntegrator24.Test.csproj", "{6AAB0C0F-FC8F-40CF-937B-B811B54CC25C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecuIntegrator24", "WinApp\SecuIntegrator24.csproj", "{39985077-9E9A-4974-A369-28B5D63DC5CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecuIntegrator24", "WinApp\SecuIntegrator24.csproj", "{378D910B-9881-427F-90BE-49CAF78867F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D392074D-7F40-4BE6-B8E1-5BDB9D9F91D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D392074D-7F40-4BE6-B8E1-5BDB9D9F91D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D392074D-7F40-4BE6-B8E1-5BDB9D9F91D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D392074D-7F40-4BE6-B8E1-5BDB9D9F91D3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{39985077-9E9A-4974-A369-28B5D63DC5CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{39985077-9E9A-4974-A369-28B5D63DC5CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{39985077-9E9A-4974-A369-28B5D63DC5CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{39985077-9E9A-4974-A369-28B5D63DC5CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AAB0C0F-FC8F-40CF-937B-B811B54CC25C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AAB0C0F-FC8F-40CF-937B-B811B54CC25C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AAB0C0F-FC8F-40CF-937B-B811B54CC25C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AAB0C0F-FC8F-40CF-937B-B811B54CC25C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{378D910B-9881-427F-90BE-49CAF78867F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{378D910B-9881-427F-90BE-49CAF78867F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{378D910B-9881-427F-90BE-49CAF78867F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{378D910B-9881-427F-90BE-49CAF78867F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

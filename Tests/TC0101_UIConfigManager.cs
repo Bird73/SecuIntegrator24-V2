@@ -21,7 +21,7 @@ public class TC0101_UIConfigManager
     public void DelayLoad()
     {
         // Arrange
-        var mockUIConfigManager = new Mock<IUIConfigManager>();
+        var mockUIConfigManager = new Mock<UIConfigManager>() { CallBase = true };
         var mainForm = new MainForm(mockUIConfigManager.Object, null);
 
         // Act
@@ -39,7 +39,7 @@ public class TC0101_UIConfigManager
     public void UIConfiguration()
     {
         // Arrange
-        var mockUIConfigManager = new Mock<IUIConfigManager>();
+        var mockUIConfigManager = new Mock<UIConfigManager>() { CallBase = true };
         var mainForm = new MainForm(mockUIConfigManager.Object, null);
 
         // Act
@@ -51,5 +51,7 @@ public class TC0101_UIConfigManager
         Assert.False(mainForm.FormBorderStyle == FormBorderStyle.Sizable);          // FormBorderStyle.FixedSingle, 固定視窗邊框
         Assert.False(mainForm.MaximizeBox);                                         // MaximizeBox, 不顯示最大化按鈕
         Assert.False(mainForm.MinimizeBox);                                         // MinimizeBox, 不顯示最小化按鈕
+
+        Assert.Equal("SecuIntegrator 24", mainForm.Text);                           // MainForm.Text, 視窗標題
     }
 }

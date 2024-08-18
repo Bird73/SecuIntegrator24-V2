@@ -21,11 +21,11 @@ public class TC0103_Exit
     {
         // Arrange
         var mainForm = new MainForm(null, null);
-        var exitButton = mainForm.Controls.Find("exitButton", true)[0] as Button;
-
-        Assert.NotNull(exitButton);     // exitButton 是否存在
 
         mainForm.Show();                // 顯示視窗
+        
+        var exitButton = mainForm.Controls.Find("exitButton", true)[0] as Button;
+        Assert.NotNull(exitButton);     // exitButton 是否存在
 
         // Act
         exitButton.PerformClick();      // 模擬使用者按下按鈕
@@ -39,13 +39,13 @@ public class TC0103_Exit
     public void ExitMenuItemClick()
     {
         // Arrange
-        var mockUITrayManager = new Mock<IUITrayManager>();
+        var mockUITrayManager = new Mock<UITrayManager>() { CallBase = true };
         var mainForm = new MainForm(null, mockUITrayManager.Object);
 
         mainForm.Show();
 
         // simulate the context menu of the tray icon
-        var notifyIcon = mainForm.GetNotifyIcon();
+        var notifyIcon = mockUITrayManager.Object.GetNotifyIcon();
         Assert.NotNull(notifyIcon);     // notifyIcon 是否存在
 
         var contextMenu = notifyIcon.ContextMenuStrip;

@@ -5,6 +5,7 @@ using Birdsoft.SecuIntegrator24.WinUI;
 using Xunit;    // Add Xunit NuGet package, 測試框架
 using Moq;      // Add Moq NuGet package, 假物件框架
 using System.Formats.Asn1;
+using System.Windows.Forms;
 
 public class TC0102_UITrayManager
 {
@@ -16,7 +17,7 @@ public class TC0102_UITrayManager
     public void DelayLoadWhanFormInitialized()
     {
         // Arrange
-        var mockUITrayManager = new Mock<IUITrayManager>();
+        var mockUITrayManager = new Mock<UITrayManager>() { CallBase = true };
         var mainForm = new MainForm(null, mockUITrayManager.Object);
 
         // Act
@@ -35,7 +36,7 @@ public class TC0102_UITrayManager
     public void WindowClosesToSystemTray()
     {
         // Arrange
-        var mockUITrayManager = new Mock<IUITrayManager>();
+        var mockUITrayManager = new Mock<UITrayManager>() { CallBase = true };
         var mainForm = new MainForm(null, mockUITrayManager.Object);
 
         mainForm.Show();
@@ -47,6 +48,10 @@ public class TC0102_UITrayManager
         // Assert
         mockUITrayManager.Verify(m => m.MinimizeToTray(), Times.Once);      // MinimizeToTray, 最小化視窗到系統匣
         Assert.False(mainForm.Visible);                                     // 視窗是否隱藏
+
+        var notifyIcon = mockUITrayManager.Object.GetNotifyIcon();
+        Assert.NotNull(notifyIcon);                                         // 通知圖示是否存在
+        Assert.NotNull(notifyIcon.Icon);                                    // 通知圖示是否有圖示
     }
 
     /// <summary>
@@ -57,7 +62,7 @@ public class TC0102_UITrayManager
     public void WindowRestoresFromSystemTray()
     {
         // Arrange
-        var mockUITrayManager = new Mock<IUITrayManager>();
+        var mockUITrayManager = new Mock<UITrayManager>() { CallBase = true };
         var mainForm = new MainForm(null, mockUITrayManager.Object);
 
         mainForm.Show();
