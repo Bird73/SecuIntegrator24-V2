@@ -2,3 +2,7 @@ Tests/bin
 Tests/obj
 WinApp/bin
 WinApp/obj
+SystemInfrastructureObject/bin
+SystemInfrastructureObject/obj
+BusinessObject/bin
+BusinessObject/obj

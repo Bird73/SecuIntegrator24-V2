@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WinApp\SecuIntegrator24.csproj" />
+    <ProjectReference Include="..\SystemInfrastructureObject\SecuIntegrator24SIO.csproj" />
   </ItemGroup>
 
 </Project>
