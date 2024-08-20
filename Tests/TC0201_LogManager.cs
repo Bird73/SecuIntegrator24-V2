@@ -1,13 +1,20 @@
 namespace Birdsoft.SecuIntegrator24.Tests;
 
-using System.Runtime.CompilerServices;
 using Birdsoft.SecuIntegrator24.SystemInfrastructureObject;
 
 using System.Text.Json;
 using Xunit;
 
+/// <summary>
+///     Unit Test for LogManager
+///     日誌管理器測試
+/// </summary>
 public class TC0201_LogManager
 {
+    /// <summary>
+    ///     Test if the log is written
+    ///     測試是否寫入日誌
+    /// </summary>
     [Fact]
     public void Test_Log()
     {
@@ -56,6 +63,10 @@ public class TC0201_LogManager
         Assert.True(isEntryExits);      // Assert that the log entry exists, 確認 LogEntry 存在
     }
 
+    /// <summary>
+    ///     Test if old logs are cleaned up
+    ///     測試是否清理舊日誌
+    /// </summary>
     [Fact]
     public void Test_CleanUpOldLogs()
     {
@@ -91,16 +102,15 @@ public class TC0201_LogManager
         {
             var date = currentDate.AddDays(-i);
             var filePath = Path.Combine(logDirectory, $"Log_{date:yyyyMMdd}.json");
-            Assert.False(File.Exists(filePath));        // Assert that the log file does not exist, 確認檔案不存在
 
             if (i >= retentionDays)
-        {
-            Assert.False(File.Exists(filePath));        // Assert that the log file does not exist, 確認檔案不存在
-        }
-        else
-        {
-            Assert.True(File.Exists(filePath));         // Assert that recent logs still exist, 確認最近的日誌仍然存在
-        }
+            {
+                Assert.False(File.Exists(filePath));        // Assert that the log file does not exist, 確認檔案不存在
+            }
+            else
+            {
+                Assert.True(File.Exists(filePath));         // Assert that recent logs still exist, 確認最近的日誌仍然存在
+            }
         }
 
         // Clean up the test files, 清理測試文件
