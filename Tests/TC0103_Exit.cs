@@ -3,8 +3,8 @@ namespace Birdsoft.SecuIntegrator24.Tests;
 using Birdsoft.SecuIntegrator24.WinUI;
 using System.Windows.Forms;
 
-using Xunit;
-using Moq;
+using Xunit;    // Add Xunit NuGet package, 測試框架
+using Moq;      // Add Moq NuGet package, 假物件框架
 
 /// <summary>
 ///     Unit Test for Exit
@@ -22,19 +22,23 @@ public class TC0103_Exit
         // Arrange
         var mainForm = new MainForm(null, null);
 
-        mainForm.Show();                // 顯示視窗
+        mainForm.Show();                // Show the form, 顯示視窗
         
         var exitButton = mainForm.Controls.Find("exitButton", true)[0] as Button;
-        Assert.NotNull(exitButton);     // exitButton 是否存在
+        Assert.NotNull(exitButton);     // check if the button exists, 檢查按鈕是否存在
 
         // Act
-        exitButton.PerformClick();      // 模擬使用者按下按鈕
+        exitButton.PerformClick();      // simulate the user clicking the button, 模擬使用者按下按鈕
 
         // Assert
-        Assert.False(mainForm.Visible);         // 視窗是否隱藏
-        Assert.True(mainForm.IsDisposed);       // 視窗是否已經釋放
+        Assert.False(mainForm.Visible);         // check if the form is hidden, 檢查視窗是否隱藏
+        Assert.True(mainForm.IsDisposed);       // check if the form is disposed, 檢查視窗是否已經釋放
     }
 
+    /// <summary>
+    ///     Test if the exit menu item is clicked
+    ///     測試按下退出選單項目
+    /// </summary>
     [Fact]
     public void ExitMenuItemClick()
     {
@@ -46,17 +50,17 @@ public class TC0103_Exit
 
         // simulate the context menu of the tray icon
         var notifyIcon = mockUITrayManager.Object.GetNotifyIcon();
-        Assert.NotNull(notifyIcon);     // notifyIcon 是否存在
+        Assert.NotNull(notifyIcon);     // check if the notify icon exists, 檢查通知圖示是否存在
 
         var contextMenu = notifyIcon.ContextMenuStrip;
         var exitMenuItem = contextMenu.Items.Find("exitMenuItem", true)[0] as ToolStripMenuItem;
-        Assert.NotNull(exitMenuItem);   // exitMenuItem 是否存在
+        Assert.NotNull(exitMenuItem);   // check if the menu item exists, 檢查選單項目是否存在
 
         // Act
-        exitMenuItem.PerformClick();     // 模擬使用者按下選單項目
+        exitMenuItem.PerformClick();     // simulate the user clicking the menu item, 模擬使用者按下選單項目
 
         // Assert
-        Assert.False(mainForm.Visible);         // 視窗是否隱藏
-        Assert.True(mainForm.IsDisposed);       // 視窗是否已經釋放
+        Assert.False(mainForm.Visible);         // check if the form is hidden, 檢查視窗是否隱藏
+        Assert.True(mainForm.IsDisposed);       // check if the form is disposed, 檢查視窗是否已經釋放
     }
 }

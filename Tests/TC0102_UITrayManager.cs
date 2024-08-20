@@ -7,6 +7,10 @@ using Moq;      // Add Moq NuGet package, 假物件框架
 using System.Formats.Asn1;
 using System.Windows.Forms;
 
+/// <summary>
+///     Unit Test for UITrayManager
+///     視窗管理器測試
+/// </summary>
 public class TC0102_UITrayManager
 {
     /// <summary>

@@ -10,7 +10,7 @@ public class UIConfigManager : IUIConfigManager
     ///     Form
     ///     表單
     /// </summary>
-    private Form? _form;                // initialize when DelayLoad is called
+    private Form? _form;                // initialize when DelayLoad is called, 在 DelayLoad 被呼叫時初始化
 
     /// <summary>
     ///     Delay load
