@@ -1,5 +1,8 @@
 namespace Birdsoft.SecuIntegrator24.WinUI;
 
+using Birdsoft.SecuIntegrator24.SystemInfrastructureObject;
+using Microsoft.VisualBasic.Logging;
+
 /// <summary>
 ///     Main Form
 ///     主視窗
@@ -48,9 +51,13 @@ public partial class MainForm : Form
         CustomerInitializComponent();
     }
 
+    /// <summary>
+    ///     Customer Initializ Component
+    ///     自定義初始化元件
+    /// </summary>
     private void CustomerInitializComponent()
     {
-        // Set the form properties
+        // Set the form properties, 設定視窗屬性
         _uiConfigManager.SetResizable(false);
         _uiConfigManager.SetMaximizeButton(false);
         _uiConfigManager.SetMinimizeButton(false);
@@ -68,6 +75,9 @@ public partial class MainForm : Form
         
         this.Text = "SecuIntegrator 24";
 
+        // Set the form size, 設定視窗大小
+        this.Size = new Size(800, 600);
+
         // Exit Button
         Button exitButton = new Button();
         exitButton.Size = new Size(120, 50);
@@ -76,6 +86,23 @@ public partial class MainForm : Form
         exitButton.Text = "Exit";
         exitButton.Click += Exit_Click;
         this.Controls.Add(exitButton);
+
+        // Work Status TextBox
+        TextBox workStatusTextBox = new TextBox();
+        workStatusTextBox.Name = "workStatusTextBox";
+
+        // workStatusTextBox is located at 1/2 height of the screen to the top of exitButton, workStatusTextBox 位於螢幕高度的 1/2 到 exitButton 的頂部
+        workStatusTextBox.Size = new Size(ClientSize.Width - 20, this.ClientSize.Height / 2 - exitButton.Height / 2 - 20);
+        workStatusTextBox.Location = new Point(10, (exitButton.Top - workStatusTextBox.Height) / 2);
+        workStatusTextBox.Multiline = true;
+        workStatusTextBox.ScrollBars = ScrollBars.Vertical;
+        workStatusTextBox.ReadOnly = true;
+        LogManager.Logged += (sender, e) =>
+        {
+            // Append the log message to the workStatusTextBox on the top, 將日誌訊息附加到 workStatusTextBox 的頂部
+            workStatusTextBox.Text = e.Message + Environment.NewLine + workStatusTextBox.Text;
+        };
+        this.Controls.Add(workStatusTextBox);
     }
 
     /// <summary>

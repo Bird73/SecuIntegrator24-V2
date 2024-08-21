@@ -1,5 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\SystemInfrastructureObject\SecuIntegrator24SIO.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <Product>SecuIntegrator 24</Product>
     <OutputType>WinExe</OutputType>
