@@ -54,13 +54,14 @@ public class TC0201_LogManager
         catch (Exception ex)
         {
             Assert.True(false, $"Failed to deserialize log file. Exception: {ex.Message}");
-            return;     // Early exit if deserialization fails, 如果反序列化失敗，提前退出
+            return;         // Early exit if deserialization fails, 如果反序列化失敗，提前退出
         }
         
-        Assert.NotNull(logEntries);     // Assert that the log file exists, 確認檔案存在
+        Assert.NotNull(logEntries);         // Assert that the log file exists, 確認檔案存在
 
-        bool isEntryExits = logEntries.Any(e => e.Level == level && e.Message == message && e.Exception == exception);
-        Assert.True(isEntryExits);      // Assert that the log entry exists, 確認 LogEntry 存在
+        var TestEntry = logEntries.Find(e => e.Level == level && e.Message == message);
+        Assert.NotNull(TestEntry);                  // Assert that the log entry exists, 確認 LogEntry 存在
+        Assert.NotNull(TestEntry.Exception);        // Assert that the exception exists, 確認例外存在
     }
 
     /// <summary>

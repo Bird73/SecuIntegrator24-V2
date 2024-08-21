@@ -1,37 +1,7 @@
 ﻿namespace Birdsoft.SecuIntegrator24.SystemInfrastructureObject;
 
 using Microsoft.Extensions.Logging;
-
-/// <summary>
-///     Log entry
-///     日誌項目
-/// </summary>
-public class LogEntry
-{
-    /// <summary>
-    ///     Log level : Information, Warning, Error
-    ///     日誌等級 : 資訊, 警告, 錯誤
-    /// </summary>
-    public LogManager.LogLevel Level { get; set; } = LogManager.LogLevel.Information;
-
-    /// <summary>
-    ///     Log message
-    ///     日誌訊息
-    /// </summary>
-    public string Message { get; set; } = string.Empty;
-
-    /// <summary>
-    ///     Exception
-    ///     例外
-    /// </summary>
-    public Exception? Exception { get; set; } = null;
-
-    /// <summary>
-    ///     Time stamp
-    ///     時間戳記
-    /// </summary>
-    public DateTime TimeStamp { get; set; } = DateTime.Now;
-}
+using System.Text.Json;
 
 public static class LogManager
 {
@@ -82,6 +52,12 @@ public static class LogManager
         // None
     }
 
+    private static readonly string LogDirectory = "Logs";
+    private static readonly object _lock = new object();
+
+    private static List<LogEntry> _logEntries = new();
+    private static uint _retentionDays = 30;
+
     /// <summary>
     ///     Log event, raised when a log is written
     ///     日誌事件, 當日誌被寫入時觸發
@@ -97,7 +73,49 @@ public static class LogManager
     /// <param name="exception"></param>
     public static void Log(LogLevel level, string message, Exception? exception = null)
     {
-        // Log the message
+        var logEntry = new LogEntry
+        {
+            Level = level,
+            Message = message,
+            Exception = exception,
+            TimeStamp = DateTime.Now
+        };
+
+        lock (_lock)
+        {
+            _logEntries.Add(logEntry);
+            SaveLogToFile(logEntry);
+        }
+
+        Logged?.Invoke(null, logEntry);
+    }
+
+    private static void SaveLogToFile(LogEntry logEntry)
+    {
+        lock (_lock)
+        {
+            var filePath = Path.Combine(LogDirectory, $"Log_{DateTime.Now:yyyyMMdd}.json");
+            if (!Directory.Exists(LogDirectory))
+            {
+                Directory.CreateDirectory(LogDirectory);
+            }
+
+            List<LogEntry> logEntries;
+            if (File.Exists(filePath))
+            {
+                var existingLogs = File.ReadAllText(filePath);
+                logEntries = JsonSerializer.Deserialize<List<LogEntry>>(existingLogs) ?? new List<LogEntry>();
+            }
+            else
+            {
+                logEntries = new List<LogEntry>();
+            }
+
+            logEntries.Add(logEntry);
+
+            var jsonContent = JsonSerializer.Serialize(logEntries, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(filePath, jsonContent);
+        }
     }
 
     /// <summary>
@@ -105,8 +123,25 @@ public static class LogManager
     ///     清理舊日誌
     /// </summary>
     /// <param name="RetentionDays"></param>
-    public static void CleanUpOldLogs(uint RetentionDays)
+    public static void CleanUpOldLogs(uint retentionDays)
     {
+        _retentionDays = retentionDays;
+        lock (_lock)
+        {
+            var files = Directory.GetFiles(LogDirectory, "Log_*.json");
+            var cutoffDate = DateTime.Now.AddDays(-retentionDays);
 
+            foreach (var file in files)
+            {
+                var fileName = Path.GetFileNameWithoutExtension(file);
+                if (DateTime.TryParseExact(fileName.Replace("Log_", ""), "yyyyMMdd", null, System.Globalization.DateTimeStyles.None, out var fileDate))
+                {
+                    if (fileDate < cutoffDate)
+                    {
+                        File.Delete(file);
+                    }
+                }
+            }
+        }
     }
 }
