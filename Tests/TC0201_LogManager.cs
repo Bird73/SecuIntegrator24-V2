@@ -1,6 +1,6 @@
 namespace Birdsoft.SecuIntegrator24.Tests;
 
-using Birdsoft.SecuIntegrator24.SystemInfrastructureObject;
+using Birdsoft.SecuIntegrator24.SystemInfrastructureObject.LogManager;
 
 using System.Text.Json;
 using Xunit;

@@ -1,8 +1,12 @@
-﻿namespace Birdsoft.SecuIntegrator24.SystemInfrastructureObject;
+﻿namespace Birdsoft.SecuIntegrator24.SystemInfrastructureObject.LogManager;
 
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
+/// <summary>
+///     Log manager for logging information, warnings, and errors.
+///     用於記錄信息、警告和錯誤的日誌管理器。
+/// </summary>
 public static class LogManager
 {
     /// <summary>
@@ -52,11 +56,23 @@ public static class LogManager
         // None
     }
 
+    /// <summary>
+    ///     Directory to store logs
+    ///     用於存儲日誌的目錄
+    /// </summary>
     private static readonly string LogDirectory = "Logs";
+
+    /// <summary>
+    ///     Lock object for thread safety
+    ///     用於執行緒安全的鎖定物件
+    /// </summary>
     private static readonly object _lock = new object();
 
+    /// <summary>
+    ///     List of log entries
+    ///     日誌條目列表
+    /// </summary>
     private static List<LogEntry> _logEntries = new();
-    private static uint _retentionDays = 30;
 
     /// <summary>
     ///     Log event, raised when a log is written
@@ -87,19 +103,27 @@ public static class LogManager
             SaveLogToFile(logEntry);
         }
 
+        // Raise the Logged event, 觸發 Logged 事件
         Logged?.Invoke(null, logEntry);
     }
 
+    /// <summary>
+    ///     Write a log
+    ///     寫入日誌
+    /// </summary>
+    /// <param name="logEntry"></param>
     private static void SaveLogToFile(LogEntry logEntry)
     {
         lock (_lock)
         {
+            // file path is Logs/Log_yyyyMMdd.json, 檔案路徑是 Logs/Log_yyyyMMdd.json
             var filePath = Path.Combine(LogDirectory, $"Log_{DateTime.Now:yyyyMMdd}.json");
             if (!Directory.Exists(LogDirectory))
             {
                 Directory.CreateDirectory(LogDirectory);
             }
 
+            // Read existing logs, 讀取現有日誌
             List<LogEntry> logEntries;
             if (File.Exists(filePath))
             {
@@ -111,8 +135,9 @@ public static class LogManager
                 logEntries = new List<LogEntry>();
             }
 
-            logEntries.Add(logEntry);
+            logEntries.Add(logEntry);       // Add the new log entry, 添加新的日誌條目
 
+            // Save the log entries to a file, 將日誌條目保存到檔案
             var jsonContent = JsonSerializer.Serialize(logEntries, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(filePath, jsonContent);
         }
@@ -125,15 +150,17 @@ public static class LogManager
     /// <param name="RetentionDays"></param>
     public static void CleanUpOldLogs(uint retentionDays)
     {
-        _retentionDays = retentionDays;
         lock (_lock)
         {
+            // Get all log files, 獲取所有日誌檔案
             var files = Directory.GetFiles(LogDirectory, "Log_*.json");
             var cutoffDate = DateTime.Now.AddDays(-retentionDays);
 
             foreach (var file in files)
             {
                 var fileName = Path.GetFileNameWithoutExtension(file);
+
+                // Get the date part of the file name and compare with the cutoff date, 取得檔案名稱的日期部分並與截止日期比較
                 if (DateTime.TryParseExact(fileName.Replace("Log_", ""), "yyyyMMdd", null, System.Globalization.DateTimeStyles.None, out var fileDate))
                 {
                     if (fileDate < cutoffDate)

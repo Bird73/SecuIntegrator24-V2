@@ -1,7 +1,6 @@
 namespace Birdsoft.SecuIntegrator24.WinUI;
 
-using Birdsoft.SecuIntegrator24.SystemInfrastructureObject;
-using Microsoft.VisualBasic.Logging;
+using Birdsoft.SecuIntegrator24.SystemInfrastructureObject.LogManager;
 
 /// <summary>
 ///     Main Form

@@ -1,4 +1,4 @@
-namespace Birdsoft.SecuIntegrator24.SystemInfrastructureObject;
+namespace Birdsoft.SecuIntegrator24.SystemInfrastructureObject.LogManager;
 
 // <summary>
 ///     Log entry
