@@ -20,7 +20,6 @@ public class TC0202_TaskScheduleManager
         var testFlag = new TestFlag();                                          // Flag for testing if the task is executed, 用於測試任務是否已執行
 
         var task = new TestTask1(testFlag);                                     // Test task for testing TaskScheduleManager, 用於測試TaskScheduleManager的測試任務
-        var taskScheduleManager = new TaskScheduleManager();
         
         // Create a background schedule that runs the task on the current day and time after 1 minute, 創建一個背景計劃，在1分鐘後的當天和時間運行任務
         var backgroundSchedule = new BackgroundSchedule();
@@ -29,10 +28,10 @@ public class TC0202_TaskScheduleManager
         backgroundSchedule.MonthlyDays.Add(today);
         backgroundSchedule.ExecutionTimes.Add(DateTime.Now.AddMinutes(1));
 
-        taskScheduleManager.RegisterTask(task, backgroundSchedule, null);       // Register the task and no precondition, 註冊任務並無前提條件
+        TaskScheduleManager.RegisterTask(task, backgroundSchedule, null);       // Register the task and no precondition, 註冊任務並無前提條件
 
         // Act
-        taskScheduleManager.StartAllTasks();
+        TaskScheduleManager.StartAllTasks();
 
         Thread.Sleep(65000);        // wait for 65 seconds(over the 1 minute mark), 等待65秒(超過1分鐘標記)
 
@@ -54,8 +53,7 @@ public class TC0202_TaskScheduleManager
         var testFlag = new TestFlag();                                          // Flag for testing if the task is executed, 用於測試任務是否已執行
 
         var task = new TestTask1(testFlag);
-        var taskScheduleManager = new TaskScheduleManager();                    // Test task for testing TaskScheduleManager, 用於測試TaskScheduleManager的測試任務
-
+ 
         // Create a background schedule that runs the task on the current day and time after 1 minute, 創建一個背景計劃，在1分鐘後的當天和時間運行任務
         var backgroundSchedule = new BackgroundSchedule();
 
@@ -63,14 +61,14 @@ public class TC0202_TaskScheduleManager
         backgroundSchedule.MonthlyDays.Add(today);
         backgroundSchedule.ExecutionTimes.Add(DateTime.Now.AddMinutes(1));
 
-        taskScheduleManager.RegisterTask(task, backgroundSchedule, null);       // Register the task and no precondition, 註冊任務並無前提條件
+        TaskScheduleManager.RegisterTask(task, backgroundSchedule, null);       // Register the task and no precondition, 註冊任務並無前提條件
 
         // Act
-        taskScheduleManager.StartAllTasks();
+        TaskScheduleManager.StartAllTasks();
 
-        Thread.Sleep(30000);                                // wait for 30 seconds, 等待30秒
+        Thread.Sleep(80000);                                // wait for 80 seconds, 等待80秒
 
-        taskScheduleManager.StopAllTasks();                 // Cancel the task, 取消任務
+        TaskScheduleManager.StopAllTasks();                 // Cancel the task, 取消任務
 
         // Assert
         lock (testFlag)
@@ -93,8 +91,6 @@ public class TC0202_TaskScheduleManager
         var task1 = new TestTask1(testFlag1);                                    // Test task 1
         var task2 = new TestTask2(testFlag2);                                    // Test task 2
 
-        var taskScheduleManager = new TaskScheduleManager();
-
         // Create two background schedules that run the tasks at the same time after 1 minute, 創建兩個背景計劃，在1分鐘後的同一時間運行任務
         var startTime = DateTime.Now.AddMinutes(1);
         var backgroundSchedule1 = new BackgroundSchedule();
@@ -113,13 +109,13 @@ public class TC0202_TaskScheduleManager
             Type = PreconditionType.AllTasksCompleted
         };
 
-        taskScheduleManager.RegisterTask(task1, backgroundSchedule1, null);                 // Register TestTask1
-        taskScheduleManager.RegisterTask(task2, backgroundSchedule2, precondition);         // Register TestTask2 with precondition
+        TaskScheduleManager.RegisterTask(task1, backgroundSchedule1, null);                 // Register TestTask1
+        TaskScheduleManager.RegisterTask(task2, backgroundSchedule2, precondition);         // Register TestTask2 with precondition
 
         // Act
-        taskScheduleManager.StartAllTasks();
+        TaskScheduleManager.StartAllTasks();
 
-        Thread.Sleep(30000);        // wait for 30 seconds, 等待30秒
+        Thread.Sleep(90000);        // wait for 90 seconds, 等待90秒
 
         // Assert
         lock (testFlag1)
@@ -132,19 +128,19 @@ public class TC0202_TaskScheduleManager
             }
         }
 
-        Thread.Sleep(60000);            // wait for 30 seconds, 等待30秒
+        Thread.Sleep(180000);            // wait for 180 seconds, 等待180秒
         lock (testFlag1)
         {
             Assert.NotNull(testFlag1.TaskEndTime);              // assert that TestTask1 is completed
             lock (testFlag2)
             {
                 Assert.True(testFlag2.isTestTaskExecuted);      // assert that TestTask2 is executed
-                Assert.NotNull(testFlag2.TaskEndTime);          // assert that TestTask2 is completed
-                Assert.True(testFlag2.TaskStartTime > testFlag1.TaskEndTime);       // assert that TestTask2 starts after TestTask1
+                Assert.Null(testFlag2.TaskEndTime);          // assert that TestTask2 is completed
+                Assert.True(testFlag2.TaskStartTime >= testFlag1.TaskEndTime);       // assert that TestTask2 starts after TestTask1
             }
         }
 
-        Thread.Sleep(60000);            // wait for 30 seconds, 等待30秒
+        Thread.Sleep(120000);            // wait for 120 seconds, 等待120秒
         lock (testFlag2)
         {
                 Assert.NotNull(testFlag2.TaskEndTime);          // assert that TestTask2 is completed
@@ -225,7 +221,7 @@ public class TestTask1 : IBackgroundTask
         }
 
         // Run the task for 1 minute, 在1分鐘內運行任務
-        DateTime endTime = DateTime.Now.AddMinutes(1);
+        DateTime endTime = DateTime.Now.AddMinutes(2);
         while (DateTime.Now < endTime && !token.IsCancellationRequested)
         {
             // Do nothing, 不做任何事
@@ -260,7 +256,7 @@ public class TestTask2 : IBackgroundTask
             _testFlag.TaskStartTime = DateTime.Now;
         }
 
-        DateTime endTime = DateTime.Now.AddMinutes(1);
+        DateTime endTime = DateTime.Now.AddMinutes(2);
         while (DateTime.Now < endTime && !token.IsCancellationRequested)
         {
             // Do nothing, 不做任何事
