@@ -30,20 +30,16 @@ public class TC0302_SetSettings
         mainForm.Show();
 
         var initialYearComboBox = mainForm.Controls.Find("initialYearComboBox", true).FirstOrDefault() as ComboBox;
-        if (initialYearComboBox == null)
-            Assert.True(false);
+        initialYearComboBox.Should().NotBeNull();
 
         var connectionIntervalComboBox = mainForm.Controls.Find("connectionIntervalComboBox", true).FirstOrDefault() as ComboBox;
-        if (connectionIntervalComboBox == null)
-            Assert.True(false);
+        connectionIntervalComboBox.Should().NotBeNull();
 
         var isRunAllBackgroundTasksOnStartup = mainForm.Controls.Find("isRunAllBackgroundTasksOnStartup", true).FirstOrDefault() as CheckBox;
-        if (isRunAllBackgroundTasksOnStartup == null)
-            Assert.True(false);
+        isRunAllBackgroundTasksOnStartup.Should().NotBeNull();
 
         var saveButton = mainForm.Controls.Find("saveSettingsButton", true).FirstOrDefault() as Button;
-        if (saveButton == null)
-            Assert.True(false);
+        saveButton.Should().NotBeNull();
 
         // Act
         var index = 0;
@@ -58,11 +54,11 @@ public class TC0302_SetSettings
 
         void RunTestForYearAndInterval(int testYear, int testInterval, bool isRunAllBackgroundTasks)
         {
-            initialYearComboBox.Text = testYear.ToString();
-            connectionIntervalComboBox.Text = testInterval.ToString();
-            isRunAllBackgroundTasksOnStartup.Checked = isRunAllBackgroundTasks;
+            initialYearComboBox!.Text = testYear.ToString();
+            connectionIntervalComboBox!.Text = testInterval.ToString();
+            isRunAllBackgroundTasksOnStartup!.Checked = isRunAllBackgroundTasks;
 
-            saveButton.PerformClick();
+            saveButton!.PerformClick();
 
             // Check if the year is within the valid range, if not, set it to the default year. 檢查年份是否在有效範圍內，如果不是，則將其設置為默認年份。
             var expectedYear = (testYear < minimumYear || testYear > maximumYear) ? DateTime.Now.Year : testYear;
