@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SystemInfrastructureObject\SecuIntegrator24SIO.csproj" />
+    <ProjectReference Include="..\BusinessObject\SecuIntegrator24BO.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

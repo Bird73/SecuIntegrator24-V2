@@ -4,8 +4,7 @@ using Birdsoft.SecuIntegrator24.WinUI;
 
 using Xunit;    // Add Xunit NuGet package, 測試框架
 using Moq;      // Add Moq NuGet package, 假物件框架
-using System.Formats.Asn1;
-using System.Windows.Forms;
+using FluentAssertions;     // Add FluentAssertions NuGet package, 擴充斷言
 
 /// <summary>
 ///     Unit Test for UITrayManager
@@ -51,11 +50,11 @@ public class TC0102_UITrayManager
 
         // Assert
         mockUITrayManager.Verify(m => m.MinimizeToTray(), Times.Once);      // MinimizeToTray, 最小化視窗到系統匣
-        Assert.False(mainForm.Visible);                                     // 視窗是否隱藏
+        mainForm.Visible.Should().BeFalse();                                // Main form should be hidden, 主視窗應該被隱藏
 
         var notifyIcon = mockUITrayManager.Object.GetNotifyIcon();
-        Assert.NotNull(notifyIcon);                                         // 通知圖示是否存在
-        Assert.NotNull(notifyIcon.Icon);                                    // 通知圖示是否有圖示
+        notifyIcon.Should().NotBeNull();                                    // Check if the notify icon exists, 檢查通知圖示是否存在
+        notifyIcon.Icon.Should().NotBeNull();                               // Check if the notify icon has an icon, 檢查通知圖示是否有圖示
     }
 
     /// <summary>
@@ -78,6 +77,6 @@ public class TC0102_UITrayManager
 
         // Assert
         mockUITrayManager.Verify(m => m.RestoreFromTray(), Times.Once);     // RestoreFromTray, 從系統匣還原視窗
-        Assert.True(mainForm.Visible);                                      // 視窗是否顯示
+        mainForm.Visible.Should().BeTrue();                                  // Main form should be visible, 主視窗應該顯示
     }
 }

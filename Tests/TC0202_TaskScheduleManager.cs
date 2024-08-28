@@ -3,6 +3,7 @@ namespace Birdsoft.SecuIntegrator24.Tests;
 using Birdsoft.SecuIntegrator24.SystemInfrastructureObject.TaskScheduleManager;
 
 using Xunit;
+using FluentAssertions;
 
 /// <summary>
 ///     Test class for TaskScheduleManager.
@@ -73,7 +74,8 @@ public class TC0202_TaskScheduleManager
         // Assert
         lock (testFlag)
         {
-            Assert.True(testFlag.isTestTaskCancelled);     // assert that the task is cancelled, 確認任務是否已取消
+            
+            testFlag.isTestTaskCancelled.Should().BeTrue();     // assert that the task is cancelled, 確認任務是否已取消
         }
     }
 
@@ -120,30 +122,33 @@ public class TC0202_TaskScheduleManager
         // Assert
         lock (testFlag1)
         {
-            Assert.True(testFlag1.isTestTaskExecuted);          // assert that TestTask1 is executed
-            Assert.Null(testFlag1.TaskEndTime);                 // assert that TestTask1 is not cancelled
+            testFlag1.isTestTaskExecuted.Should().BeTrue();         // assert that TestTask1 is executed, 確認TestTask1是否已執行
+            testFlag1.TaskEndTime.Should().BeNull();                // assert that TestTask1 is not cancelled, 確認TestTask1未取消
+        
             lock (testFlag2)
             {
-                Assert.False(testFlag2.isTestTaskExecuted);     // assert that TestTask2 is not executed
+                testFlag2.isTestTaskExecuted.Should().BeFalse();    // assert that TestTask2 is not executed, 確認TestTask2未執行
             }
         }
 
         Thread.Sleep(180000);            // wait for 180 seconds, 等待180秒
         lock (testFlag1)
         {
-            Assert.NotNull(testFlag1.TaskEndTime);              // assert that TestTask1 is completed
+            testFlag1.TaskEndTime.Should().NotBeNull();         // assert that TestTask1 is completed, 確認TestTask1已完成
             lock (testFlag2)
             {
-                Assert.True(testFlag2.isTestTaskExecuted);      // assert that TestTask2 is executed
-                Assert.Null(testFlag2.TaskEndTime);          // assert that TestTask2 is completed
-                Assert.True(testFlag2.TaskStartTime >= testFlag1.TaskEndTime);       // assert that TestTask2 starts after TestTask1
+                testFlag2.isTestTaskExecuted.Should().BeTrue();     // assert that TestTask2 is executed, 確認TestTask2已執行
+                testFlag1.TaskEndTime.Should().NotBeNull();         // assert that TestTask1 is completed
+                testFlag2.TaskStartTime.Value.Should().BeOnOrAfter(testFlag1.TaskEndTime.Value);       // assert that TestTask2 starts after TestTask1, 確認TestTask2在TestTask1之後開始
+                
+                // Assert.True(testFlag2.TaskStartTime >= testFlag1.TaskEndTime);       // assert that TestTask2 starts after TestTask1
             }
         }
 
         Thread.Sleep(120000);            // wait for 120 seconds, 等待120秒
         lock (testFlag2)
         {
-                Assert.NotNull(testFlag2.TaskEndTime);          // assert that TestTask2 is completed
+            testFlag2.TaskEndTime.Should().NotBeNull();         // assert that TestTask2 is completed, 確認TestTask2已完成
         }
     }
 }

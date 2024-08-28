@@ -1,6 +1,8 @@
 namespace Birdsoft.SecuIntegrator24.WinUI;
 
+using Birdsoft.SecuIntegrator24.BusinessObject;
 using Birdsoft.SecuIntegrator24.SystemInfrastructureObject.LogManager;
+
 
 /// <summary>
 ///     Main Form
@@ -102,6 +104,12 @@ public partial class MainForm : Form
             workStatusTextBox.Text = e.Message + Environment.NewLine + workStatusTextBox.Text;
         };
         this.Controls.Add(workStatusTextBox);
+
+        // Set the event handler, 設定事件處理程序
+        this.Load += (sender, e) => mainForm_OnLoad(e);                 // Main Form On Load Event, 主視窗載入事件
+        this.FormClosing += (sender, e) => mainForm_OnClosing(e);       // Form Closing Event, 表單關閉事件
+
+        SystemConfiguration.LoadSettings();
     }
 
     /// <summary>
@@ -109,14 +117,26 @@ public partial class MainForm : Form
     ///     表單關閉事件，不是真的退出程式，只是最小化到系統列
     /// </summary>
     /// <param name="e"></param>
-    protected override void OnFormClosing(FormClosingEventArgs e)
+    private void mainForm_OnClosing(FormClosingEventArgs e)
     {
         if (!_isExit)
         {
             e.Cancel = true;
             _uiTrayManager.MinimizeToTray();
         }
-        base.OnFormClosing(e);
+    }
+
+    /// <summary>
+    ///     Main Form On Load Event
+    ///     主視窗載入事件
+    /// </summary>
+    /// <param name="e"></param>
+    private void mainForm_OnLoad(EventArgs e)
+    {
+        // Set the form to the center of the screen, 設定視窗置中
+        this.CenterToScreen();
+
+        LogManager.Log(LogManager.LogLevel.Information, "Program loaded.");
     }
 
     /// <summary>
@@ -130,9 +150,22 @@ public partial class MainForm : Form
         _uiTrayManager.RestoreFromTray();
     }
 
+    /// <summary>
+    ///     Exit Button Click Event
+    ///     退出按鈕點擊事件
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Exit_Click(object? sender, EventArgs e)
     {
-        _isExit = true;
-        Application.Exit();
+        // Message dialog to confirm exit, 確認退出的訊息對話框
+        DialogResult result = MessageBox.Show("是否確定退出程式？", "退出", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+        if (result == DialogResult.Yes)
+        {
+            LogManager.Log(LogManager.LogLevel.Information, "Exit the program.");
+
+            _isExit = true;
+            Application.Exit();
+        }
     }
 }

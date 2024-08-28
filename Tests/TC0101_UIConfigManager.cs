@@ -4,6 +4,7 @@ using Birdsoft.SecuIntegrator24.WinUI;
 
 using Xunit;    // Add Xunit NuGet package, 測試框架
 using Moq;      // Add Moq NuGet package, 假物件框架
+using FluentAssertions;     // Add FluentAssertions NuGet package, 擴充斷言
 using System.Windows.Forms;
 
 /// <summary>
@@ -48,10 +49,10 @@ public class TC0101_UIConfigManager
         // Assert
         mockUIConfigManager.Verify(m => m.DelayLoad(mainForm), Times.Once);         // DelayLoad, 延遲載入是否有被呼叫
         
-        Assert.False(mainForm.FormBorderStyle == FormBorderStyle.Sizable);          // FormBorderStyle.FixedSingle, 固定視窗邊框
-        Assert.False(mainForm.MaximizeBox);                                         // MaximizeBox, 不顯示最大化按鈕
-        Assert.False(mainForm.MinimizeBox);                                         // MinimizeBox, 不顯示最小化按鈕
-
-        Assert.Equal("SecuIntegrator 24", mainForm.Text);                           // MainForm.Text, 視窗標題
+        mainForm.FormBorderStyle.Should().Be(FormBorderStyle.FixedSingle);          // FormBorderStyle, 固定視窗邊框
+        mainForm.MaximizeBox.Should().BeFalse();                                    // MaximizeBox, 不顯示最大化按鈕
+        mainForm.MinimizeBox.Should().BeFalse();                                    // MinimizeBox, 不顯示最小化按鈕
+        
+        mainForm.Text.Should().Be("SecuIntegrator 24");                             // MainForm.Text, 視窗標題
     }
 }

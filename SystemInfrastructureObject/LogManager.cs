@@ -1,6 +1,5 @@
 ﻿namespace Birdsoft.SecuIntegrator24.SystemInfrastructureObject.LogManager;
 
-using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
 /// <summary>

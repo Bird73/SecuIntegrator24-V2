@@ -5,6 +5,7 @@ using Birdsoft.SecuIntegrator24.WinUI;
 
 using System.Windows.Forms;
 using Xunit;
+using FluentAssertions;
 
 /// <summary>
 ///     Unit Test for WorkStatusTextBox
@@ -24,12 +25,12 @@ public class TC0104_WorkStatusTextBox
         string testMessage = $"Test message : {Guid.NewGuid()}";     // Generate a unique message, 產生一個獨特的訊息
 
         var workStatusTextBox = frmMain.Controls.Find("workStatusTextBox", true)[0] as TextBox;
-        Assert.NotNull(workStatusTextBox);
+        workStatusTextBox.Should().NotBeNull();         // Check if the work status text box is found, 檢查是否找到工作狀態文字框
 
         // Act
         LogManager.Log(LogManager.LogLevel.Information, testMessage, null);     // Log the test message, 記錄測試訊息
 
         // Assert
-        Assert.Equal(testMessage, workStatusTextBox.Lines[0]);      // Check if the message is displayed correctly, 檢查訊息是否正確顯示
+        testMessage.Should().Be(workStatusTextBox!.Lines[0]);                    // Check if the message is displayed correctly, 檢查訊息是否正確顯示
     }
 }
